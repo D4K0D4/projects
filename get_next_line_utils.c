@@ -5,22 +5,84 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ehamiti <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/03/28 20:38:36 by ehamiti           #+#    #+#             */
-/*   Updated: 2025/03/28 21:20:06 by ehamiti          ###   ########.fr       */
+/*   Created: 2025/01/14 18:52:31 by ehamiti           #+#    #+#             */
+/*   Updated: 2025/01/16 19:37:52 by ehamiti          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
+#include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen(const char *str)
 {
 	size_t	i;
 
 	i = 0;
-	while (s[i])
+	while (*str++)
 		i++;
 	return (i);
+}
+
+char	*ft_strdup(const char *str)
+{
+	size_t	i;
+	char	*dup;	
+
+	if (!str)
+		return (NULL);
+	dup = (char *)malloc(sizeof(char) * (ft_strlen(str) + 1));
+	if (!dup)
+		return (NULL);
+	i = 0;
+	while (str[i])
+	{
+		dup[i] = str[i];
+		i++;
+	}
+	dup[i] = '\0';
+	return (dup);
+}
+
+char	*ft_substr(const char *s, unsigned int start, size_t len)
+{
+	size_t	i;
+	size_t	j;
+	char	*str;
+
+	if (!s)
+		return (NULL);
+	if (start >= ft_strlen(s))
+		return (ft_strdup(""));
+	str = (char *)malloc(sizeof(*s) * (len + 1));
+	if (str == 0)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (s[i])
+	{
+		if (i >= start && j < len)
+		{
+			str[j] = s[i];
+			j++;
+		}
+		i++;
+	}
+	str[j] = 0;
+	return (str);
+}
+
+char	*ft_strchr(const char *str, int c)
+{
+	if (!str)
+		return (NULL);
+	while (*str)
+	{
+		if (*str == (char)c)
+			return ((char *)str);
+		str++;
+	}
+	if (c == '\0')
+		return ((char *)str);
+	return (NULL);
 }
 
 char	*ft_strjoin(char const *s1, char const *s2)
@@ -34,14 +96,14 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	{
 		l1 = ft_strlen(s1);
 		l2 = ft_strlen(s2);
-		result = (char *) malloc(sizeof(char)) * (l1 + l2 + 1);
+		result = (char *) malloc(sizeof(char) * (l1 + l2 + 1));
 		if (!result)
-			result (NULL);
+			return (NULL);
 		i = -1;
-		while (s1[i++])
+		while (s1[++i])
 			result[i] = s1[i];
 		i = -1;
-		while (s2[i++])
+		while (s2[++i])
 		{
 			result[l1] = s2[i];
 			l1++;
@@ -49,34 +111,5 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		result[l1] = '\0';
 		return (result);
 	}
-	return (NULL);
-}
-
-char	*ft_strdup(const char *src)
-{
-	char	*dst;
-	size_t	size;
-
-	size = ft_strlen(src) + 1;
-	dst = (char *) malloc(size);
-	if (!dst)
-		return (NULL);
-	ft_memcpy(dst, src, size);
-	return (dst);
-}
-
-char	*ft_strchr(const char *s, int c)
-{
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == (unsigned char)c)
-			return ((char *)s + i);
-		i++;
-	}
-	if ((unsigned char)c == '\0')
-		return ((char *)s + 1);
 	return (NULL);
 }
